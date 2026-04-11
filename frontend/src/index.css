@@ -1,0 +1,12 @@
+/* Ensure full height for proper centering */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Center the actual app container */
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

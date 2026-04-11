@@ -1,0 +1,4 @@
+1. need to manage validaiton or error if user not enter valid lenght pass
+2. need to manage if user hit api of admin 
+3. when changing the status on dashboard then date is not getting update correct and time is not getting update 
+4. when user change status to reject then data not comming correct - Done 
