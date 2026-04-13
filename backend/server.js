@@ -21,11 +21,13 @@ app.use("/api/company", companyRoutes);
 app.use("/api/application", applicationRoutes);
 // app.use("/api/test", testRoutes);
 
+const PORT = process.env.PORT || 5000;
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
-    app.listen(5000,"0.0.0.0", () => console.log("Server running on port 5000"));
+    app.listen(PORT,"0.0.0.0", () => console.log("Server running on port ",PORT));
   })
   .catch((err) => console.log(err));
 
-module.exports
+module.exports = app;
