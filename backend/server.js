@@ -9,7 +9,7 @@ const applicationRoutes = require("./routes/applicationRoutes");
 
 const app = express();
 
-app.use(cors({origin:"https://enchanting-duckanoo-5e4d63.netlify.app"}));
+app.use(cors({origin:"https://jobtracker-frontend-fy5m.onrender.com"}));
 app.use(express.json());
 
 app.get("/", (req, res) => {
