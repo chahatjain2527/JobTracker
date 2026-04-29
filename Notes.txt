@@ -6,4 +6,6 @@
 6. permission of things that admin can only do.(specificly to approve reject buttons). 
 7. logOut is currently defined on dashboard only so need to move in navbar
 8. Feature 5 & 6 need to impliment 
-9.
+9. user can able to login with username or email, when user enter data then data should get compared in lowercase 
+10. functionality to add basic profile need to provide
+11. due to point 9 there is issue created if user have same name then it can cause issue

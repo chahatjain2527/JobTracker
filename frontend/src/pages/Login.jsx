@@ -9,7 +9,7 @@ const Login = () => {
         email: "",
         password: ""
     });
-    const { email, password } = formData;
+    const { emailName, password } = formData;
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleChange = (e) => {
@@ -21,12 +21,12 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            if (!email || !password) {
+            if (!emailName || !password) {
                 setErrorMsg("Enter all values")
                 return;
             }
             const res = await api.post("/auth/login", {
-                email,
+                emailName,
                 password,
             });
             if (res.data.token) {
@@ -50,7 +50,7 @@ const Login = () => {
         <div>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Enter Email" onChange={handleChange} value={email} name="email" />
+                <input type="text" placeholder="Enter Email or User Name" onChange={handleChange} value={emailName} name="emailName" />
                 <input type="password" placeholder="Enter Password" onChange={handleChange} value={password} name="password" />
                 <button type="submit">Login</button>
             </form>
