@@ -1,13 +1,16 @@
 ﻿import React, { useState } from "react"
 import api from "../services/api"
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 
 const Register = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name :"",
-    email:"",
-    password:""
+    name: "",
+    email: "",
+    password: ""
   });
 
   const { name, email, password } = formData;
@@ -20,10 +23,10 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(!name || !email || !password){
+      if (!name || !email || !password) {
         setErrorMsg("Enter all values");
         return;
       }
@@ -34,15 +37,17 @@ const Register = () => {
         password,
       });
       localStorage.setItem("token", res.data.token);
+      login(res.data.token);
       navigate("/dashboard");
 
     } catch (error) {
+      debugger;
       const message = error?.response?.data?.message || "Something went wrong";
       setErrorMsg(message);
     }
   };
 
-  return(
+  return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
         <h2 className="text-3xl font-semibold text-slate-900 mb-6">Create account</h2>

@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
             email,
             password
         });
-        console.log("create user",user);
+        user.password = undefined;
         const token = jwt.sign(
             {userId:user._id,role:user.role,userName:user.name},
             process.env.JWT_SECRET,
