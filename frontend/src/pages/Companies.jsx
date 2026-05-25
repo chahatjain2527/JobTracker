@@ -19,7 +19,7 @@ const ApplyAtCompany = ({ id, onClose, refresh }) => {
     return (
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-slate-900/40 px-4">
             <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
-                <h3 className="text-xl font-semibold text-slate-900 mb-4">Apply to company</h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-4">Applied to company</h3>
                 <label className="block text-sm text-slate-700 mb-2">Applied Date</label>
                 <input
                     type="date"
@@ -29,7 +29,7 @@ const ApplyAtCompany = ({ id, onClose, refresh }) => {
                 />
                 <div className="mt-6 flex justify-end gap-3">
                     <button onClick={onClose} className="rounded-xl border border-slate-300 px-4 py-2 text-slate-700 hover:bg-slate-50">Close</button>
-                    <button onClick={handleSubmit} disabled={!applyDate} className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60">Apply</button>
+                    <button onClick={handleSubmit} disabled={!applyDate} className="rounded-xl bg-slate-900 px-4 py-2 text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60">Submit</button>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@ const GetCompanies = () => {
             <div className="mx-auto max-w-6xl space-y-6">
                 <section className="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
                     <h2 className="text-2xl font-semibold text-slate-900">Companies</h2>
-                    <p className="mt-2 text-sm text-slate-600">Browse companies and apply directly.</p>
+                    <p className="mt-2 text-sm text-slate-600">Browse companies and contact details.</p>
                 </section>
                 <section className="rounded-3xl bg-white shadow-sm border border-slate-200">
                     {/* Desktop Table View */}
@@ -102,7 +102,7 @@ const GetCompanies = () => {
                                                         }}
                                                         className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-700"
                                                     >
-                                                        Apply
+                                                        Applied
                                                     </button>
                                                 )}
                                             </td>

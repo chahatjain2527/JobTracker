@@ -61,12 +61,10 @@ const getAllMyApplications = async (req, res) => {
     if (req.query.Status != undefined && req.query.Status != "All") {
       model.Status = req.query.Status;
     }
-    // console.log("model=>", model);
     var appliList = await Application.find(model).populate("CompanyId", {
       companyName: 1,
       contactName: 1,
     });
-    // console.log("appliList=>", appliList);
     if (req.query.Name != "" && req.query.Name != undefined) {
       appliList = appliList.filter((item) =>
         item.CompanyId.companyName

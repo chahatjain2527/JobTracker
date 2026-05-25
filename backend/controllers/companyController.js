@@ -8,7 +8,6 @@ const createCompany = async (req, res) => {
         }
         var checkEmail = await Company.findOne({ contactEmail: contactEmail });
         if (checkEmail) {
-            console.log("Email already present");
             return res.status(400).json({ message: "Email Already Present" });
         }
         else {
@@ -83,11 +82,9 @@ const getPendingCompany = async (req, res) => {
 
 const UpdateCompanyStatus = async (req, res) => {
     try {
-        console.log("in update status")
         const { id } = req.params;
         const { status } = req.body;
 
-        console.log("Id=>",id," Status=>", status);
 
         if (!id || !status) {
             return res.status(400).json({ message: "Enter Id and Status" });

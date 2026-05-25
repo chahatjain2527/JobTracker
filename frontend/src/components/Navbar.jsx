@@ -45,10 +45,14 @@ const Navbar = () => {
             <Link to="/addCompanies" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition">
               Add Company
             </Link>
-            {isAdmin && (
-              <Link to="/pendingCompanies" className="text-sm font-medium text-yellow-600 hover:text-yellow-700 transition">
-                Pending
+            {isAdmin && (<>
+              <Link to="/users" className="text-sm font-medium text-yellow-600 hover:text-yellow-700 transition">
+                Users
               </Link>
+              <Link to="/pendingCompanies" className="text-sm font-medium text-yellow-600 hover:text-yellow-700 transition">
+                Pending Companies
+              </Link>
+              </>
             )}
           </nav>
 
@@ -104,14 +108,15 @@ const Navbar = () => {
             >
               Add Company
             </Link>
-            {isAdmin && (
-              <Link 
-                to="/pendingCompanies"
-                onClick={() => setIsMenuOpen(false)}
-                className="block px-4 py-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition"
-              >
-                👑 Pending Companies
+            {isAdmin && (<>
+              <Link to="/users" onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition" >
+                  Users
               </Link>
+              <Link to="/pendingCompanies" onClick={() => setIsMenuOpen(false)}
+                className="block px-4 py-2 text-yellow-600 hover:bg-yellow-50 rounded-lg transition" >
+                  Pending Companies
+              </Link></>
             )}
             <div className="border-t border-slate-200 pt-4 mt-4 px-4">
               <p className="text-sm font-medium text-slate-900 mb-1">{userName}</p>
