@@ -11,6 +11,6 @@
 11. due to point 9 there is issue created if user have same name then it can cause issue
 12. loader work everywhere.
 13. if admin rejects the request then need a reason to reject the record
-14. admin can see users registered and their info
+14. admin can see users registered and their info (Done)
 15. if user not exist (delete from db) and then request of page or api then error, need to handle 
 16. gmail need to verify when registering user (user api to send api) 
