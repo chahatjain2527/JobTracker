@@ -15,6 +15,7 @@ const Register = () => {
 
   const { name, email, password } = formData;
   const [errorMsg, setErrorMsg] = useState("");
+  const [loader, setLoader] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -25,9 +26,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoader(true);
     try {
       if (!name || !email || !password) {
         setErrorMsg("Enter all values");
+        return;
+      }
+      if (password.length < 6) {
+        setErrorMsg("Password must be at least 6 characters")
         return;
       }
 
@@ -44,6 +50,9 @@ const Register = () => {
       debugger;
       const message = error?.response?.data?.message || "Something went wrong";
       setErrorMsg(message);
+    }
+    finally {
+      setLoader(false);
     }
   };
 
@@ -76,7 +85,7 @@ const Register = () => {
             placeholder="Enter Password"
             className="w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 focus:border-slate-700 focus:outline-none"
           />
-          <button type="submit" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">Register</button>
+          <button type="submit" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">{loader ? (<span className="spinner"></span>) : "Register"}</button>
         </form>
         {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
         <p className="mt-6 text-sm text-slate-600">

@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import api from "../services/api";
+import Loader from "../components/Loader";
 
 const ApplyAtCompany = ({ id, onClose, refresh }) => {
     const [applyDate, setApplyDate] = useState("");
@@ -41,15 +42,20 @@ const GetCompanies = () => {
     const [applications, setApplications] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+    const [loader, setLoader] = useState(false);
 
     const fetchCompanies = async () => {
         try {
+            setLoader(true);
             const allCompanyList = await api.get("/company/get");
             const myAppliedList = await api.get("/application/get");
             setCompanies(allCompanyList.data.data);
             setApplications(myAppliedList.data.data);
         } catch (error) {
             console.log("getcompanies error", error);
+        }
+        finally {
+            setLoader(false);
         }
     };
 
@@ -61,6 +67,8 @@ const GetCompanies = () => {
         acc[app.CompanyId._id] = app;
         return acc;
     }, {});
+
+    if (loader) return <Loader />;
 
     return (
         <main className="min-h-screen bg-slate-50 px-4 py-6">

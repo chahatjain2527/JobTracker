@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react"
 import api from "../services/api";
 import { jwtDecode } from "jwt-decode";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
     const [statusCount, setStatusCount] = useState({});
@@ -10,10 +11,12 @@ const Dashboard = () => {
     const [status, setstatus] = useState("All");
     const [loginRole, setLoginRole] = useState("User");
     const [loginName, setLoginName] = useState("");
+    const [loader, setLoader] = useState(false);
 
     const fetchMyDashboardData = async (userId, status = "All", companyName = "") => {
         try {
             if (!userId) return;
+            setLoader(true);
             const data = await api.get("/application/get", { params: { Status: status, Name: companyName } });
             setApplications(data.data.data);
             const count = {
@@ -32,6 +35,9 @@ const Dashboard = () => {
         }
         catch (error) {
             console.log("Dashboard load error", error);
+        }
+        finally {
+            setLoader(false);
         }
     };
     useEffect(() => {
@@ -63,6 +69,7 @@ const Dashboard = () => {
         fetchMyDashboardData(decodedData.userId, status, e.target.value);
     };
 
+    if (loader) return <Loader />;
     return (
         <main className="min-h-screen bg-slate-50 px-4 py-6">
             <div className="mx-auto max-w-6xl space-y-6">
@@ -163,9 +170,9 @@ const Dashboard = () => {
                                         <div className="flex justify-between items-start">
                                             <h3 className="font-semibold text-slate-900">{company.CompanyId.companyName}</h3>
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${company.Status.toLowerCase() === 'applied' ? 'bg-blue-100 text-blue-800' :
-                                                    company.Status.toLowerCase() === 'interview' ? 'bg-purple-100 text-purple-800' :
-                                                        company.Status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' :
-                                                            'bg-green-100 text-green-800'
+                                                company.Status.toLowerCase() === 'interview' ? 'bg-purple-100 text-purple-800' :
+                                                    company.Status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' :
+                                                        'bg-green-100 text-green-800'
                                                 }`}>
                                                 {company.Status}
                                             </span>

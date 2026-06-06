@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import Loader from "../components/Loader"
 
 const GetAllUsers = () => {
     const [userData, setUserData] = useState([]);
-    useEffect(()=>{
+    const [loader, setLoader] = useState(false);
+    useEffect(() => {
         fetchAllUsers();
-    },[]);
-    const fetchAllUsers = async ()=>{
+    }, []);
+    const fetchAllUsers = async () => {
         try {
+            setLoader(true);
             const res = await api.get("/users/getAll");
             setUserData(res.data.data);
         } catch (error) {
-            console.log("Error in feteching users=>",error);
+            console.log("Error in feteching users=>", error);
         }
-        finally{}
+        finally {
+            setLoader(false);
+        }
     }
+    if (loader) return <Loader />;
+
     return (
         <main className="min-h-screen bg-slate-50 px-4 py-6">
             <div className="mx-auto max-w-6xl space-y-6">
@@ -28,7 +35,7 @@ const GetAllUsers = () => {
                         <table className="w-full divide-y divide-slate-200 text-sm">
                             <thead className="bg-slate-50 text-slate-600">
                                 <tr>
-                                    {['Sr.No','Name','Email','Subscription'].map((label) => (
+                                    {['Sr.No', 'Name', 'Email', 'Subscription'].map((label) => (
                                         <th key={label} className="px-4 py-3 text-center font-medium">{label}</th>
                                     ))}
                                 </tr>

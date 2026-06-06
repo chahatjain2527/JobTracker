@@ -1,16 +1,31 @@
+------------Pending------------
 1. need to manage validaiton or error if user not enter valid lenght pass
 2. need to manage if user hit api of admin 
 3. when changing the status on dashboard then date is not getting update correct and time is not getting update 
-4. when user change status to reject then data not comming correct - Done
-5. Mobile number non mandatory
 6. permission of things that admin can only do.(specificly to approve reject buttons). 
-7. logOut is currently defined on dashboard only so need to move in navbar (done)
 8. Feature 5 & 6 need to impliment 
 9. user can able to login with username or email, when user enter data then data should get compared in lowercase 
 10. functionality to add basic profile need to provide
 11. due to point 9 there is issue created if user have same name then it can cause issue
-12. loader work everywhere.
-13. if admin rejects the request then need a reason to reject the record
-14. admin can see users registered and their info (Done)
+17. admin can see all AND user can see their's rejected company record  
 15. if user not exist (delete from db) and then request of page or api then error, need to handle 
 16. gmail need to verify when registering user (user api to send api) 
+18. much data so, create fixed table and in that infinite scroll to bring data and default 10 records
+19. info tab on every page make it dym=namic and make it component and use it everywhere 
+20. when applying to a compnay popup open but navigation UI is apparing up 
+21. admin can again move a company to pending or reject from company page (do it on same page of company by configuration rights).
+22. om pending page need to give option to see rejected companys.
+
+
+
+-----------Partial Complete----------
+12. loader work everywhere. (done initialy)
+
+
+
+-----------Completed------------------
+4. when user change status to reject then data not comming correct - (Done)
+7. logOut is currently defined on dashboard only so need to move in navbar - (done)
+5. Mobile number non mandatory (done)
+13. if admin rejects the request then need a reason to reject the record (done)
+14. admin can see users registered and their info (Done)

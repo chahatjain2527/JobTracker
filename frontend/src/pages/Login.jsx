@@ -26,11 +26,6 @@ const Login = () => {
                 setErrorMsg("Enter all values")
                 return;
             }
-            if (password.length < 6) {
-                setLoader(false);
-                setErrorMsg("Password must be at least 6 characters")
-                return;
-            }
             const res = await api.post("/auth/login", {
                 emailName,
                 password,

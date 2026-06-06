@@ -38,7 +38,7 @@ const createCompany = async (req, res) => {
         }
     } catch (error) {
         console.log("Company create error", error);
-        return res.status(500).json({ message: "Server Error Creating Company",error: error.message });
+        return res.status(500).json({ message: "Server Error Creating Company", error: error.message });
     }
 };
 
@@ -59,15 +59,15 @@ const getCompany = async (req, res) => {
 
 const getPendingCompany = async (req, res) => {
     try {
-        
+
         var model = {
             status: "pending"
         };
-        if(req.user.role == "user"){
-            model.createdBy  = req.user._id;
+        if (req.user.role == "user") {
+            model.createdBy = req.user._id;
         }
 
-        const pendingList = await Company.find(model).populate("createdBy",{name:1,email:1});
+        const pendingList = await Company.find(model).populate("createdBy", { name: 1, email: 1 });
         return res.status(200).json({
             message: "Record Fetch SuccessFull",
             data: pendingList,
@@ -83,8 +83,7 @@ const getPendingCompany = async (req, res) => {
 const UpdateCompanyStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
-
+        const { status, reason } = req.body;
 
         if (!id || !status) {
             return res.status(400).json({ message: "Enter Id and Status" });
@@ -94,17 +93,19 @@ const UpdateCompanyStatus = async (req, res) => {
         if (!companyData) {
             return res.status(400).json({ message: "data not found for ID" });
         }
-        var validStatus = ["pending", "approved","rejected"];
-        if(!validStatus.includes(status))
-        {
+        var validStatus = ["pending", "approved", "rejected"];
+        if (!validStatus.includes(status)) {
             return res.status(400).json({ message: "status is invalid" });
         }
         companyData.status = status;
+        if (status == "rejected") {
+            companyData.rejectReason = reason;
+        }
         await companyData.save();
         return res.status(200).json({
             message: "status updated Successful",
             data: companyData,
-        }); 
+        });
     }
     catch (error) {
         console.log("Error in update status=>", error);
