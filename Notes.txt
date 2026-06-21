@@ -11,11 +11,10 @@
 15. if user not exist (delete from db) and then request of page or api then error, need to handle 
 16. gmail need to verify when registering user (user api to send api) 
 18. much data so, create fixed table and in that infinite scroll to bring data and default 10 records
-19. info tab on every page make it dym=namic and make it component and use it everywhere 
-20. when applying to a compnay popup open but navigation UI is apparing up 
+19. info tab on every page make it dymnamic and make it component and use it everywhere 
 21. admin can again move a company to pending or reject from company page (do it on same page of company by configuration rights).
-22. om pending page need to give option to see rejected companys.
-
+22. on pending page need to give option to see rejected companys.
+23. Admin can delete company but what if applications are still there
 
 
 -----------Partial Complete----------
@@ -29,3 +28,4 @@
 5. Mobile number non mandatory (done)
 13. if admin rejects the request then need a reason to reject the record (done)
 14. admin can see users registered and their info (Done)
+20. when applying to a compnay popup open but navigation UI is apparing up (Done)
