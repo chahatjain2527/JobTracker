@@ -98,9 +98,7 @@ const UpdateCompanyStatus = async (req, res) => {
             return res.status(400).json({ message: "status is invalid" });
         }
         companyData.status = status;
-        if (status == "rejected") {
-            companyData.rejectReason = reason;
-        }
+        companyData.rejectReason = reason ?? "";
         await companyData.save();
         return res.status(200).json({
             message: "status updated Successful",

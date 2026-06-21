@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import api from "../services/api";
 import Loader from "../components/Loader";
+import { jwtDecode } from 'jwt-decode'
 
 const ApplyAtCompany = ({ id, onClose, refresh }) => {
     const [applyDate, setApplyDate] = useState("");
@@ -37,12 +38,40 @@ const ApplyAtCompany = ({ id, onClose, refresh }) => {
     );
 };
 
+const moveCompanyToPending = async (id, callBaqckFunc) => {
+    try {
+        let reason = "";
+        while (!reason || !reason.trim()) {
+            reason = prompt("Please enter the rejection reason:", "Not relible");
+            if (reason === null) {
+                // User clicked Cancel
+                return;
+            }
+        }
+        const data = await api.put("/company/updateStatus/" + id, { status: "pending", reason });
+        callBaqckFunc();
+    } catch (error) {
+        console.log("Error=>", error);
+    }
+}
+
 const GetCompanies = () => {
     const [companies, setCompanies] = useState([]);
     const [applications, setApplications] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedCompanyId, setSelectedCompanyId] = useState(null);
     const [loader, setLoader] = useState(false);
+
+    const token = localStorage.getItem('token');
+    let isAdmin = false;
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+            isAdmin = decoded?.role?.toLowerCase() === 'admin';
+        } catch (error) {
+            isAdmin = false;
+        }
+    }
 
     const fetchCompanies = async () => {
         try {
@@ -99,7 +128,7 @@ const GetCompanies = () => {
                                             <td className="px-4 py-4 text-center">{company.contactEmail}</td>
                                             <td className="px-4 py-4 text-center">{company.contactPhone}</td>
                                             <td className="px-4 py-4 text-center">{company.contactType}</td>
-                                            <td className="px-4 py-4 text-center">
+                                            {!isAdmin ? (<td className="px-4 py-4 text-center">
                                                 {hasApplied ? (
                                                     <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{hasApplied.Status}</span>
                                                 ) : (
@@ -108,12 +137,17 @@ const GetCompanies = () => {
                                                             setSelectedCompanyId(company._id);
                                                             setShowPopup(true);
                                                         }}
-                                                        className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-700"
-                                                    >
+                                                        className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-700">
                                                         Applied
                                                     </button>
                                                 )}
-                                            </td>
+                                            </td>) : (<td className="px-4 py-4 text-center">
+                                                <button
+                                                    className="rounded-full bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-700"
+                                                    onClick={() => moveCompanyToPending(company._id, fetchCompanies)}>
+                                                    Mark Pending
+                                                </button>
+                                            </td>)}
                                         </tr>
                                     );
                                 })
@@ -146,7 +180,7 @@ const GetCompanies = () => {
                                                 <p><span className="font-medium">Phone:</span> {company.contactPhone}</p>
                                                 {company.contactType && <p><span className="font-medium">Type:</span> {company.contactType}</p>}
                                             </div>
-                                            {!hasApplied ? (
+                                            {!isAdmin ? !hasApplied ? (
                                                 <button
                                                     onClick={() => {
                                                         setSelectedCompanyId(company._id);
@@ -156,7 +190,11 @@ const GetCompanies = () => {
                                                 >
                                                     Apply Now
                                                 </button>
-                                            ) : null}
+                                            ) : null : (<button
+                                                className="w-full rounded-lg bg-slate-900 py-2 text-sm font-medium text-white hover:bg-slate-700 transition"
+                                                onClick={() => moveCompanyToPending(company._id, fetchCompanies)}>
+                                                Mark Pending
+                                            </button>)}
                                         </div>
                                     );
                                 })}

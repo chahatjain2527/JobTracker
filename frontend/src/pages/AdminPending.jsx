@@ -30,10 +30,10 @@ const GetPendingCompanies = () => {
                         return;
                     }
                 }
-                if (reason && reason.trim()) {
-                    // Reject company
-                    console.log("Reason:", reason);
-                }
+                // if (reason && reason.trim()) {
+                //     // Reject company
+                //     console.log("Reason:", reason);
+                // }
             }
             await api.put("/company/updateStatus/" + id, { status, reason });
             fetchPendingCompanies();
