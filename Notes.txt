@@ -7,6 +7,12 @@
 9. user can able to login with username or email, when user enter data then data should get compared in lowercase 
 10. functionality to add basic profile need to provide
 11. due to point 9 there is issue created if user have same name then it can cause issue
+
+
+-. when user enter mail in login then need to verify mail :- multiple ways
+-. need to make components for filter and count notation and use where want
+-. admin can import data from excel:- list of companys and can export old data and update it and reupload.
+
 17. admin can see all AND user can see their's rejected company record  
 15. if user not exist (delete from db) and then request of page or api then error, need to handle 
 16. gmail need to verify when registering user (user api to send api) 
