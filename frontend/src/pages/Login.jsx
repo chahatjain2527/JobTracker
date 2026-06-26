@@ -1,5 +1,5 @@
 ﻿import React, { useState } from "react"
-import api from "../services/api"
+    import api from "../services/api"
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -9,6 +9,7 @@ const Login = () => {
     });
     const { emailName, password } = formData;
     const [errorMsg, setErrorMsg] = useState("");
+    const [loader, setLoader] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -18,8 +19,10 @@ const Login = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setLoader(true);
         try {
             if (!emailName || !password) {
+                setLoader(false);
                 setErrorMsg("Enter all values")
                 return;
             }
@@ -33,8 +36,12 @@ const Login = () => {
             }
         }
         catch (error) {
+            setLoader(false);
             const message = error?.response?.data?.message || "Something went wrong";
             setErrorMsg(message);
+        }
+        finally {
+            setLoader(false);            
         }
     };
     return (
@@ -58,7 +65,7 @@ const Login = () => {
                         name="password"
                         className="w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 focus:border-slate-700 focus:outline-none"
                     />
-                    <button type="submit" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">Login</button>
+                    <button type="submit" disabled={loader} className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">{loader ? (<span className="spinner"></span>) : "Login"}</button>
                 </form>
                 {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
                 <p className="mt-6 text-sm text-slate-600">

@@ -1,17 +1,21 @@
 ﻿import React, { useState } from "react"
 import api from "../services/api"
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 
 const Register = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    name :"",
-    email:"",
-    password:""
+    name: "",
+    email: "",
+    password: ""
   });
 
   const { name, email, password } = formData;
   const [errorMsg, setErrorMsg] = useState("");
+  const [loader, setLoader] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,11 +24,16 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoader(true);
     try {
-      if(!name || !email || !password){
+      if (!name || !email || !password) {
         setErrorMsg("Enter all values");
+        return;
+      }
+      if (password.length < 6) {
+        setErrorMsg("Password must be at least 6 characters")
         return;
       }
 
@@ -34,15 +43,20 @@ const Register = () => {
         password,
       });
       localStorage.setItem("token", res.data.token);
+      login(res.data.token);
       navigate("/dashboard");
 
     } catch (error) {
+      debugger;
       const message = error?.response?.data?.message || "Something went wrong";
       setErrorMsg(message);
     }
+    finally {
+      setLoader(false);
+    }
   };
 
-  return(
+  return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
         <h2 className="text-3xl font-semibold text-slate-900 mb-6">Create account</h2>
@@ -71,7 +85,7 @@ const Register = () => {
             placeholder="Enter Password"
             className="w-full rounded-xl border border-slate-300 px-4 py-3 text-slate-900 focus:border-slate-700 focus:outline-none"
           />
-          <button type="submit" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">Register</button>
+          <button type="submit" className="w-full rounded-xl bg-slate-900 px-4 py-3 text-white font-medium hover:bg-slate-700">{loader ? (<span className="spinner"></span>) : "Register"}</button>
         </form>
         {errorMsg && <p className="mt-4 text-sm text-red-600">{errorMsg}</p>}
         <p className="mt-6 text-sm text-slate-600">

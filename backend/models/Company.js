@@ -16,6 +16,7 @@ const CompanySchema = new mongoose.Schema({
     status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     source: { type: String, enum: ["admin", "user"], default: "user" },
+    rejectReason: { type: String },
 
 },
     {

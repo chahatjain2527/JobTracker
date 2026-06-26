@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react"
 import api from "../services/api";
 import { jwtDecode } from "jwt-decode";
+import Loader from "../components/Loader";
 
 const Dashboard = () => {
     const [statusCount, setStatusCount] = useState({});
@@ -8,10 +9,14 @@ const Dashboard = () => {
     const [decodedData, setdecodedData] = useState();
     const [compName, setCompName] = useState("");
     const [status, setstatus] = useState("All");
+    const [loginRole, setLoginRole] = useState("User");
+    const [loginName, setLoginName] = useState("");
+    const [loader, setLoader] = useState(false);
 
     const fetchMyDashboardData = async (userId, status = "All", companyName = "") => {
         try {
             if (!userId) return;
+            setLoader(true);
             const data = await api.get("/application/get", { params: { Status: status, Name: companyName } });
             setApplications(data.data.data);
             const count = {
@@ -31,15 +36,14 @@ const Dashboard = () => {
         catch (error) {
             console.log("Dashboard load error", error);
         }
+        finally {
+            setLoader(false);
+        }
     };
-
-    const [loginRole, setLoginRole] = useState("User");
-    const [loginName, setLoginName] = useState("");
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) return;
         const decoded = jwtDecode(token);
-        console.log("Decoded data=>", decoded);
         setdecodedData(decoded);
         setLoginRole(decoded.role || "User");
         setLoginName(decoded.userName || "User");
@@ -65,17 +69,18 @@ const Dashboard = () => {
         fetchMyDashboardData(decodedData.userId, status, e.target.value);
     };
 
+    if (loader) return <Loader />;
     return (
         <main className="min-h-screen bg-slate-50 px-4 py-6">
             <div className="mx-auto max-w-6xl space-y-6">
                 <section className="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div style={{"display":"none"}}>
+                        <div style={{ "display": "none" }}>
                             <h1 className="text-3xl font-semibold text-slate-900">Welcome back</h1>
                             <p className="text-sm text-slate-500">{loginName}</p>
                         </div>
                         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                            {['Applied','Interview','Rejected','Offer'].map((label) => (
+                            {['Applied', 'Interview', 'Rejected', 'Offer'].map((label) => (
                                 <div key={label} className="rounded-2xl bg-slate-50 p-4 text-center">
                                     <div className="text-sm text-slate-500">{label}</div>
                                     <div className="mt-2 text-2xl font-semibold text-slate-900">{statusCount[label.toLowerCase()] || 0}</div>
@@ -88,7 +93,7 @@ const Dashboard = () => {
                 <section className="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div className="flex flex-wrap gap-3 items-center">
-                            {['All','applied','interview','rejected','offer'].map((item) => (
+                            {['All', 'applied', 'interview', 'rejected', 'offer'].map((item) => (
                                 <label key={item} className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm text-slate-700">
                                     <input
                                         type="radio"
@@ -121,7 +126,7 @@ const Dashboard = () => {
                         <table className="w-full divide-y divide-slate-200 text-sm">
                             <thead className="bg-slate-50 text-slate-600">
                                 <tr>
-                                    {['#','Company','Contact','Status','Updated On','Action'].map((label) => (
+                                    {['#', 'Company', 'Contact', 'Status', 'Updated On', 'Action'].map((label) => (
                                         <th key={label} className="px-4 py-3 text-center font-medium">{label}</th>
                                     ))}
                                 </tr>
@@ -164,12 +169,11 @@ const Dashboard = () => {
                                     <div key={company._id} className="rounded-2xl border border-slate-300 bg-slate-50 p-4 space-y-3">
                                         <div className="flex justify-between items-start">
                                             <h3 className="font-semibold text-slate-900">{company.CompanyId.companyName}</h3>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                                company.Status.toLowerCase() === 'applied' ? 'bg-blue-100 text-blue-800' :
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${company.Status.toLowerCase() === 'applied' ? 'bg-blue-100 text-blue-800' :
                                                 company.Status.toLowerCase() === 'interview' ? 'bg-purple-100 text-purple-800' :
-                                                company.Status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' :
-                                                'bg-green-100 text-green-800'
-                                            }`}>
+                                                    company.Status.toLowerCase() === 'rejected' ? 'bg-red-100 text-red-800' :
+                                                        'bg-green-100 text-green-800'
+                                                }`}>
                                                 {company.Status}
                                             </span>
                                         </div>

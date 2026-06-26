@@ -1,20 +1,41 @@
 ﻿import { useEffect, useState } from "react";
 import api from "../services/api";
+import Loader from "../components/Loader";
 
 const GetPendingCompanies = () => {
     const [companyData, setCompanyData] = useState([]);
+    const [loader, setLoader] = useState(false);
     const fetchPendingCompanies = async () => {
         try {
+            setLoader(true);
             const res = await api.get("/company/pending");
             setCompanyData(res.data.data);
         }
         catch (error) {
             console.log("PC fetch error=>", error);
         }
+        finally {
+            setLoader(false);
+        }
     };
     const updateStatus = async (id, status) => {
         try {
-            await api.put("/company/updateStatus/" + id, { status });
+            let reason = "";
+            if (status == "rejected") {
+
+                while (!reason || !reason.trim()) {
+                    reason = prompt("Please enter the rejection reason:", "Not relible");
+                    if (reason === null) {
+                        // User clicked Cancel
+                        return;
+                    }
+                }
+                // if (reason && reason.trim()) {
+                //     // Reject company
+                //     console.log("Reason:", reason);
+                // }
+            }
+            await api.put("/company/updateStatus/" + id, { status, reason });
             fetchPendingCompanies();
         }
         catch (error) {
@@ -24,12 +45,13 @@ const GetPendingCompanies = () => {
     useEffect(() => {
         fetchPendingCompanies();
     }, []);
+    if (loader) return <Loader />;
     return (
         <main className="min-h-screen bg-slate-50 px-4 py-6">
             <div className="mx-auto max-w-6xl space-y-6">
                 <section className="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
-                    <h2 className="text-2xl font-semibold text-slate-900">Pending Companies</h2>
-                    <p className="mt-2 text-sm text-slate-600">Approve or reject pending company requests.</p>
+                    <h2 className="text-2xl font-semibold text-slate-900">Company Approval</h2>
+                    <p className="mt-2 text-sm text-slate-600">Approve or Reject company requests.</p>
                 </section>
                 <section className="rounded-3xl bg-white shadow-sm border border-slate-200">
                     {/* Desktop Table View */}
@@ -37,7 +59,7 @@ const GetPendingCompanies = () => {
                         <table className="w-full divide-y divide-slate-200 text-sm">
                             <thead className="bg-slate-50 text-slate-600">
                                 <tr>
-                                    {['Sr.No','Company Name','Contact Name','Contact Type','Created By','Action'].map((label) => (
+                                    {['Sr.No', 'Company Name', 'Contact Name', 'Contact Type', 'Created By', 'Action'].map((label) => (
                                         <th key={label} className="px-4 py-3 text-center font-medium">{label}</th>
                                     ))}
                                 </tr>
@@ -77,14 +99,14 @@ const GetPendingCompanies = () => {
                                             <p><span className="font-medium">Added by:</span> {data.createdBy?.name}</p>
                                         </div>
                                         <div className="flex gap-3">
-                                            <button 
-                                                onClick={() => updateStatus(data._id, "approved")} 
+                                            <button
+                                                onClick={() => updateStatus(data._id, "approved")}
                                                 className="flex-1 rounded-lg bg-emerald-600 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition"
                                             >
                                                 ✓ Approve
                                             </button>
-                                            <button 
-                                                onClick={() => updateStatus(data._id, "rejected")} 
+                                            <button
+                                                onClick={() => updateStatus(data._id, "rejected")}
                                                 className="flex-1 rounded-lg bg-rose-600 py-2 text-sm font-medium text-white hover:bg-rose-500 transition"
                                             >
                                                 ✕ Reject

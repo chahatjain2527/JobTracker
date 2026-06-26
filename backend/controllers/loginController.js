@@ -15,7 +15,7 @@ const loginUser = async (req, res) => {
     if (userData) {
       var checkPass = await userData.comparePassword(password);
       if (!checkPass) {
-        return res.status(400).json({ message: "Invalid Credential" });
+        return res.status(400).json({ message: "Wrong password" });
       } else {
         const token = jwt.sign(
           { userId: userData._id, role: userData.role, userName: userData.name },
@@ -28,8 +28,9 @@ const loginUser = async (req, res) => {
           token,
         });
       }
-    } else {
-      return res.status(400).json({ message: "User not exist" });
+    } else 
+      {
+      return res.status(400).json({ message: "User not found" });
     }
   } catch (error) {
     console.log("Login=> ", error);
