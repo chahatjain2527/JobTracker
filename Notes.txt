@@ -15,6 +15,7 @@
 21. admin can again move a company to pending or reject from company page (do it on same page of company by configuration rights).
 22. on pending page need to give option to see rejected companys.
 23. Admin can delete company but what if applications are still there
+24. In Admin, give functionality to import compnays from excel (default pending status).
 
 
 -----------Partial Complete----------
@@ -29,3 +30,12 @@
 13. if admin rejects the request then need a reason to reject the record (done)
 14. admin can see users registered and their info (Done)
 20. when applying to a compnay popup open but navigation UI is apparing up (Done)
+
+
+
+
+-------Reference sites------
+1. Teal
+2. Hunter
+3. Simplify
+4
